@@ -30,15 +30,15 @@ def word2SW(word):
 f = word2SW("camerastick")
 print(f)
 
-def checking(word):
-    d = enchant.Dict("en_US")
-    result = d.check(word)
-    return result
+# def checking(word):
+#     d = enchant.Dict("en_US")
+#     result = d.check(word)
+#     return result
 
 # from nltk.corpus import words
 
 # def checking2(word):
 #     return word in words.words()
 
-f = checking("er")
-print(f)
+# f = checking("er")
+# print(f)
