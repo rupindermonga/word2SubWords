@@ -1,5 +1,5 @@
 import enchant
-
+import time
 
 def combos(s):
   if not s:
@@ -21,7 +21,24 @@ def word2SW(word):
                 count += 1
         if count == len(c):
             new_list.append(c)
-    return new_list
+    flat_set = set()
+    for subtuple in new_list:
+        for item in subtuple:
+            flat_set.add(item)
+    return new_list, flat_set
 
-f = word2SW("nonstick")
+f = word2SW("camerastick")
+print(f)
+
+def checking(word):
+    d = enchant.Dict("en_US")
+    result = d.check(word)
+    return result
+
+# from nltk.corpus import words
+
+# def checking2(word):
+#     return word in words.words()
+
+f = checking("er")
 print(f)
