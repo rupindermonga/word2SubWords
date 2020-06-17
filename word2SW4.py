@@ -53,37 +53,50 @@ def infer_spaces(s):
     # been built for the i-1 first characters.
     # Returns a pair (match_cost, match_length).
     def best_match(i):
-        candidates = enumerate(reversed(cost[max(0, i-maxword):i]))
-        # return min((c + wordcost.get(s[i-k-1:i], 9e999), k+1) for k,c in candidates)
-        numbered = []
-        for k, c in candidates:
-            numbered.append((c + wordcost.get(s[i-k-1:i],9e999), k+1))
-        # return min(numbered)
-        if len(numbered)==1 or math.isinf(second_smallest(numbered)[0]):
-            final2 = min(numbered)
-        else:
-            final2 = second_smallest(numbered)
+        candidates1 = enumerate(reversed(cost1[max(0, i-maxword):i]))
+        candidates0 = enumerate(reversed(cost0[max(0, i-maxword):i]))
         
-        final1 = min(numbered)
-        return final1, final2
+        numbered1 = []
+        for k, c in candidates1:
+            numbered1.append((c + wordcost.get(s[i-k-1:i],9e999), k+1))
+        # return min(numbered)
+        if len(numbered1)==1 or math.isinf(second_smallest(numbered1)[0]):
+            final1 = min(numbered1)
+        else:
+            final1 = second_smallest(numbered1)
+        
+        final0 = min((c0 + wordcost.get(s[i-k0-1:i], 9e999), k0+1) for k0,c0 in candidates0)
+        return final0, final1
 
 
     # Build the cost array.
-    cost = [0]
+    cost1 = [0]
+    cost0 = [0]
     for i in range(1,len(s)+1):
-        c,k = best_match(i)[1]
-        cost.append(c)
+        c1,k1 = best_match(i)[1]
+        c0,k0 = best_match(i)[0]
+        cost1.append(c1)
+        cost0.append(c0)
 
     # Backtrack to recover the minimal-cost string.
-    out = []
+    out1 = []
     i = len(s)
     while i>0:
-        c,k = best_match(i)[1]
-        assert c == cost[i]
-        out.append(s[i-k:i])
-        i -= k
+        c1,k1 = best_match(i)[1]
+        assert c1 == cost1[i]
+        out1.append(s[i-k1:i])
+        i -= k1
 
-    return " ".join(reversed(out))
+    out0 = []
+    i = len(s)
+    while i>0:
+        c0,k0 = best_match(i)[0]
+        assert c0 == cost0[i]
+        out0.append(s[i-k0:i])
+        i -= k0
+
+
+    return " ".join(reversed(out0)), " ".join(reversed(out1))
 s ="photostick"
 # s = 'smartphone'
 # s="thumbgreenappleactiveassignmentweeklymetaphor"
