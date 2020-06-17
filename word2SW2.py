@@ -3,24 +3,27 @@ from math import log
 import math
 import enchant
 import json
+import copy
 
-d = enchant.Dict("en_US")
+# d = enchant.Dict("en_US")
 
-with open("wordninja_words.txt") as f:
-    original_words = f.read().split()
-    # words = f.read().split()
+# with open("wordninja_words.txt") as f:
+#     original_words = f.read().split()
+#     # words = f.read().split()
 
-words = []
-count =0
-net_count = 0
-for eachWord in original_words:
-    count +=1
-    if d.check(eachWord):# and len(eachWord) != 1:
-        words.append(eachWord)
-        net_count +=1
-print(count)
-print(net_count)
+# words = []
+# count =0
+# net_count = 0
+# for eachWord in original_words:
+#     count +=1
+#     if d.check(eachWord) and len(eachWord) != 1:
+#         words.append(eachWord)
+#         net_count +=1
+# print(count)
+# print(net_count)
 
+with open("wordninja_words_dict.txt") as f:
+    words = f.read().split()
 
 def second_smallest(numbers):
     m1, m2 = (float('inf'), 1), (float('inf'), 1)
@@ -57,10 +60,16 @@ def infer_spaces(s):
         for k, c in candidates:
             numbered.append((c + wordcost.get(s[i-k-1:i],9e999), k+1))
         # return min(numbered)
-        if len(numbered)==1 or math.isinf(second_smallest(numbered)[0]):
-            final = min(numbered)
+        new_numbered = copy.deepcopy(numbered)
+        final = min(numbered)
+        if len(numbered)==1 or math.isinf(min(numbered)[0]):
+            final = final
         else:
-            final = second_smallest(numbered)
+            new_numbered.remove(final)
+            if math.isinf(min(new_numbered)[0]):
+                final = final
+            else:    
+                final = min(new_numbered)
         return final
 
 
@@ -80,7 +89,8 @@ def infer_spaces(s):
         i -= k
 
     return " ".join(reversed(out))
-# s ="photostick"
-s = 'smartphone'
-# s="thumbgreenappleactiveassignmentweeklymetaphor"
-print(infer_spaces(s))
+# # s ="photostick"
+# # s = 'smartphone'
+# s = "aftereffect"
+# # s="thumbgreenappleactiveassignmentweeklymetaphor"
+# print(infer_spaces(s))
