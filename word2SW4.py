@@ -36,7 +36,7 @@ with open("wordninja_words_dict.txt", 'w') as f:
 
 
 
-with open("wordninja_words_dict.txt") as f:
+with open("wordninja_words_dict2.txt") as f:
     words = f.read().split()
 
 
@@ -102,30 +102,43 @@ def infer_spaces(s):
         for k1, c1 in candidates1:
             numbered1.append((c1 + wordcost.get(s[i-k1-1:i],9e999), k1+1))
         # return min(numbered)
+        count1 = sum(1 if x[0] < 9e999 else 0 for x in numbered1)
         
-        if len(numbered1)==1 or math.isinf(smallest(numbered1)[0][0]):
+        if count1 == 1:
             final1 = min(numbered1)
         else:
             final1 = smallest(numbered1)[0]
+        # if len(numbered1)==1 or math.isinf(smallest(numbered1)[0][0]):
+        #     final1 = min(numbered1)
+        # else:
+        #     final1 = smallest(numbered1)[0]
         
         numbered2 = []
         for k2, c2 in candidates2:
             numbered2.append((c2 + wordcost.get(s[i-k2-1:i],9e999), k2+1))
+        
+        count2 = sum(1 if x[0] < 9e999 else 0 for x in numbered2)
 
-        if len(numbered2) > 2:
-            if not math.isinf(smallest(numbered1)[1][0]):
-                final2 = smallest(numbered2)[1]
-            elif not math.isinf(smallest(numbered1)[0][0]):
-                final2 = smallest(numbered2)[0]
-            else:
-                final2 = min(numbered2)
-        elif len(numbered2) == 2:
-            if not math.isinf(smallest(numbered1)[0][0]):
-                final2 = smallest(numbered2)[0]
-            else:
-                final2 = min(numbered2)
+        if count2 > 2:
+            final2 = smallest(numbered2)[1]
+        elif count2 == 2:
+            final2 = smallest(numbered2)[0]
         else:
             final2 = min(numbered2)
+            
+            # if not math.isinf(smallest(numbered1)[1][0]):
+            #     final2 = smallest(numbered2)[1]
+            # elif not math.isinf(smallest(numbered1)[0][0]):
+            #     final2 = smallest(numbered2)[0]
+            # else:
+            #     final2 = min(numbered2)
+        # elif len(numbered2) == 2:
+        #     if not math.isinf(smallest(numbered1)[0][0]):
+        #         final2 = smallest(numbered2)[0]
+        #     else:
+        #         final2 = min(numbered2)
+        # else:
+        #     final2 = min(numbered2)
 
         return final0, final1, final2
 
@@ -172,10 +185,10 @@ def infer_spaces(s):
 
     return s, " ".join(reversed(out0)), " ".join(reversed(out1)), " ".join(reversed(out2))
 # s ="photostick"
-# s = "aftereffect"
+s = "aftereffect"
 # s = 'smartphone'
 # s="thumbgreenappleactiveassignmentweeklymetaphor"
-# print(infer_spaces(s))
+print(infer_spaces(s))
 
 start_time = time.time()
 with open("compound_words.txt") as f:
@@ -186,7 +199,7 @@ for eachWord in compoundWords:
     final_result.append(infer_spaces(eachWord))
 df = pd.DataFrame(final_result, columns = ["compound_word", "split_1", "split_2", "split_3"])
 
-df.to_csv('final_result.csv')
+df.to_csv('final_result5.csv')
 
 print(time.time()-start_time)
 
