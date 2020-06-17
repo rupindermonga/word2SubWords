@@ -6,20 +6,22 @@ import json
 
 d = enchant.Dict("en_US")
 
+
+'''
+#old file writing into new
 with open("wordninja_words.txt") as f:
     original_words = f.read().split()
     # words = f.read().split()
 
 words = []
-count =0
-net_count = 0
-for eachWord in original_words:
-    count +=1
-    if d.check(eachWord):# and len(eachWord) != 1:
-        words.append(eachWord)
-        net_count +=1
-print(count)
-print(net_count)
+with open("wordninja_words_dict.txt", 'w') as f:
+    for eachWord in original_words:
+        if d.check(eachWord) and len(eachWord) != 1:
+            words.append(eachWord)
+            f.write('%s\n' % eachWord)
+'''
+with open("wordninja_words_dict.txt") as f:
+    words = f.read().split()
 
 
 def second_smallest(numbers):
@@ -58,29 +60,31 @@ def infer_spaces(s):
             numbered.append((c + wordcost.get(s[i-k-1:i],9e999), k+1))
         # return min(numbered)
         if len(numbered)==1 or math.isinf(second_smallest(numbered)[0]):
-            final = min(numbered)
+            final2 = min(numbered)
         else:
-            final = second_smallest(numbered)
-        return final
+            final2 = second_smallest(numbered)
+        
+        final1 = min(numbered)
+        return final1, final2
 
 
     # Build the cost array.
     cost = [0]
     for i in range(1,len(s)+1):
-        c,k = best_match(i)
+        c,k = best_match(i)[1]
         cost.append(c)
 
     # Backtrack to recover the minimal-cost string.
     out = []
     i = len(s)
     while i>0:
-        c,k = best_match(i)
+        c,k = best_match(i)[1]
         assert c == cost[i]
         out.append(s[i-k:i])
         i -= k
 
     return " ".join(reversed(out))
-# s ="photostick"
-s = 'smartphone'
+s ="photostick"
+# s = 'smartphone'
 # s="thumbgreenappleactiveassignmentweeklymetaphor"
 print(infer_spaces(s))
