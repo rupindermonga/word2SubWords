@@ -22,6 +22,20 @@ with open("wordninja_words_dict.txt", 'w') as f:
             words.append(eachWord)
             f.write('%s\n' % eachWord)
 '''
+
+#old file writing into new
+# with open("wordninja_words.txt") as f:
+#     original_words = f.read().split()
+#     # words = f.read().split()
+
+# words = []
+# with open("wordninja_words_dict2.txt", 'w') as f:
+#     for eachWord in original_words:
+#         if len(eachWord) != 1 and len(eachWord) != 2:
+#             words.append(eachWord)
+#             f.write('%s\n' % eachWord)
+
+
 # with open("wordninja_words.txt") as f:
 #     original_words = f.read().split()
 
