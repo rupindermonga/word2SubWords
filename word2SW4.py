@@ -23,15 +23,17 @@ with open("wordninja_words_dict.txt", 'w') as f:
             f.write('%s\n' % eachWord)
 '''
 
-#old file writing into new
+
+# d = enchant.Dict("en_US")
+# #old file writing into new
 # with open("wordninja_words.txt") as f:
 #     original_words = f.read().split()
 #     # words = f.read().split()
 
 # words = []
-# with open("wordninja_words_dict2.txt", 'w') as f:
+# with open("wordninja_words_dict3.txt", 'w') as f:
 #     for eachWord in original_words:
-#         if len(eachWord) != 1 and len(eachWord) != 2:
+#         if len(eachWord) != 1 and len(eachWord) != 2 and d.check(eachWord):
 #             words.append(eachWord)
 #             f.write('%s\n' % eachWord)
 
@@ -50,7 +52,7 @@ with open("wordninja_words_dict.txt", 'w') as f:
 
 
 
-with open("wordninja_words_dict2.txt") as f:
+with open("wordninja_words_dict3.txt") as f:
     words = f.read().split()
 
 
@@ -213,7 +215,7 @@ for eachWord in compoundWords:
     final_result.append(infer_spaces(eachWord))
 df = pd.DataFrame(final_result, columns = ["compound_word", "split_1", "split_2", "split_3"])
 
-df.to_csv('final_result5.csv')
+df.to_csv('final_result6.csv')
 
 print(time.time()-start_time)
 
