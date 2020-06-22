@@ -5,7 +5,7 @@ import json
 from heapq import nsmallest
 import pandas as pd
 
-with open("wordninja_words.txt") as f:
+with open("wordninja_words_final.txt") as f:
     words = f.read().split()
 
 def smallest(numbers):
